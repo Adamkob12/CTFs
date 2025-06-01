@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sshpass -p 'guest' ssh syscall@pwnable.kr -p2222
