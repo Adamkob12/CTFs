@@ -1,0 +1,20 @@
+
+# Statix pkg
+
+# busybox-1.23.2
+# Wed Jul  1 18:53:09 CDT 2015
+
+DESTDIR=/ 
+
+
+installd()
+{
+        mkdir -p "$DESTDIR" 
+	# 00000000000000000000000000000000  busybox 
+        cp -r * "${DESTDIR}/"
+}
+removed()
+{	
+        # 00000000000000000000000000000000  busybox
+        rm "$DESTDIR"/busybox
+}
