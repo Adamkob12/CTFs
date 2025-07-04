@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sshpass -p 'guest' ssh rootkit@pwnable.kr -p2222
