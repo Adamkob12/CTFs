@@ -1,0 +1,25 @@
+
+#!/bin/bash
+make -C exploit
+
+# Assumes the machine running qemu was started like this:
+# qemu-system-i386 \
+#     -m 64 -kernel p/bzImage -initrd p/ramdisk.img \
+#     -append 'root=/dev/ram0 rw console=ttyS0 -rdinit=/sbin/init' \
+#     -serial pty \
+#     -nographic # -serial mon:stdio \
+# And that it outputed "char device redirected to /dev/pts/4"
+
+b64=$(gzip -c exploit/T | base64)
+
+echo "find /tmp -name 'T' -delete" |
+    socat -u - "./serial",raw,echo=0
+
+printf "cat >/tmp/t.gz.b64 <<'EOF'\n%s\nEOF\n" "$b64" |
+    socat -u - "./serial",raw,echo=0
+
+echo "base64 -d /tmp/t.gz.b64 | gzip -d > /tmp/T" |
+    socat -u - "./serial",raw,echo=0
+
+echo "chmod +x /tmp/T" |
+    socat -u - "./serial",raw,echo=0

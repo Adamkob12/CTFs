@@ -1,0 +1,29 @@
+Compiling 3.7.1 is quite a headache
+a few problems I came across that are bound to come up again:
+
+- weird errors in compilation, something about PIC:
+  I think this was a bug in upstream, there a patch to the Makefile that fixes this:
+
+all: vmlinux
+
++KBUILD_CFLAGS += $(call cc-option, -fno-pie)
++KBUILD_CFLAGS += $(call cc-option, -no-pie)
++KBUILD_AFLAGS += $(call cc-option, -fno-pie)
++KBUILD_CPPFLAGS += $(call cc-option, -fno-pie)
+
+insert these 4 lines that add flags in the main Makefile after all: vmlinux (around line ~500)
+
+- Weird errors in perl scripts, probably because of new versions,
+need to manually edit the perl script in `kernel/timeconst.pl`, line 373:
+
+```
+- if (!defined(@val)) {
++ if (!(@val)) {
+```
+
+(I guess "defined" is no longer supported.)
+
+- Make sure to compile for the correct architecture, by using "ARCH=" (probably i386)
+
+- gcc versions, should compile kernel with gcc-4.9, add a parameter in the compilation command:
+`make ARCH=i386 CC="gcc-4.9" -j8 bzImage`, of course gcc-4.9 needs to be installed.

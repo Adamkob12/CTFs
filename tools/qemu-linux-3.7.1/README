@@ -1,0 +1,3 @@
+This ramdisk and bzImage were originally taken from the kcrc challenge in pwnable
+
+the ramdisk.img is mounted in /mnt/diskimg_3.7.1/
